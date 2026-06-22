@@ -5,6 +5,7 @@ import { LoginPage } from '@/pages/auth/LoginPage'
 import { DashboardPage } from '@/pages/DashboardPage'
 import { ExpedientesListPage } from '@/pages/expedientes/ExpedientesListPage'
 import { NuevoExpedientePage } from '@/pages/expedientes/NuevoExpedientePage'
+import { ExpedienteDetallePage } from '@/pages/expedientes/ExpedienteDetallePage'
 
 function ProtectedRoute({ children }) {
   const { user, loading } = useAuth()
@@ -34,6 +35,7 @@ export default function App() {
           <Route path="dashboard" element={<DashboardPage />} />
           <Route path="expedientes" element={<ExpedientesListPage />} />
           <Route path="expedientes/nuevo" element={<NuevoExpedientePage />} />
+          <Route path="expedientes/:id" element={<ExpedienteDetallePage />} />
         </Route>
         <Route path="*" element={<Navigate to="/" replace />} />
       </Routes>
