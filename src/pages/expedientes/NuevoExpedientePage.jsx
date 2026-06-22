@@ -112,7 +112,7 @@ export function NuevoExpedientePage() {
         </div>
       )}
 
-      {tab === 'datos' && (
+      <div className={tab === 'datos' ? '' : 'hidden'}>
         <div className="space-y-5">
           <Card>
             <CardHeader><CardTitle>Ubicación del inmueble</CardTitle></CardHeader>
@@ -159,10 +159,12 @@ export function NuevoExpedientePage() {
             </Button>
           </div>
         </div>
-      )}
+      </div>
 
-      {tab === 'fisico' && (
-        <MetodoFisicoForm onGuardar={handleGuardarFisico} guardando={guardando} />
+      {expedienteId && (
+        <div className={tab === 'fisico' ? '' : 'hidden'}>
+          <MetodoFisicoForm onGuardar={handleGuardarFisico} guardando={guardando} />
+        </div>
       )}
     </div>
   )
