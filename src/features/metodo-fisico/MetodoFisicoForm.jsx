@@ -1,5 +1,6 @@
 import { useState, useMemo } from 'react'
 import { ChecklistInspeccion } from './ChecklistInspeccion'
+import { EdadPonderadaInput } from './EdadPonderadaInput'
 import { calcularMetodoFisico, calcularHeideckeDesdeChecklist, ESTADOS_HEIDECKE, PARTIDAS_INSPECCION } from './calculosRossHeidecke'
 import { Card, CardHeader, CardTitle, CardContent } from '@/components/ui/card'
 import { Input } from '@/components/ui/input'
@@ -105,7 +106,9 @@ export function MetodoFisicoForm({ onGuardar, guardando }) {
             <Campo label="Superficie terreno" name="superficieTerreno" value={inputs.superficieTerreno} onChange={handleInput} suffix="m²" />
             <Campo label="Costo reposición nuevo" name="costoReposicionM2" value={inputs.costoReposicionM2} onChange={handleInput} suffix="$/m²" hint="Costo de construir 1 m² nuevo hoy" />
             <Campo label="Valor unitario terreno" name="valorUnitarioTerreno" value={inputs.valorUnitarioTerreno} onChange={handleInput} suffix="$/m²" />
-            <Campo label="Edad de la construcción" name="edadAnios" value={inputs.edadAnios} onChange={handleInput} suffix="años" />
+            <div className="col-span-2">
+              <EdadPonderadaInput value={inputs.edadAnios} onChange={handleInput} />
+            </div>
             <Campo label="Vida útil" name="vidaUtilAnios" value={inputs.vidaUtilAnios} onChange={handleInput} suffix="años" hint="Típico: 60 años" />
             <div className="col-span-2">
               <Campo label="Valor residual" name="valorResidual" value={inputs.valorResidual} onChange={handleInput} suffix="%" hint="Típico: 15%" />
