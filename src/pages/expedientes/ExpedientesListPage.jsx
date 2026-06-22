@@ -2,7 +2,7 @@ import { Link } from 'react-router-dom'
 import { Button } from '@/components/ui/button'
 import { Badge } from '@/components/ui/badge'
 import { useExpedientes } from '@/hooks/useExpedientes'
-import { PlusCircle, FileText, Loader2 } from 'lucide-react'
+import { PlusCircle, FileText, Loader2, ChevronRight } from 'lucide-react'
 
 const ESTADO_VARIANT = {
   borrador: 'secondary',
@@ -65,25 +65,28 @@ export function ExpedientesListPage() {
 
       <div className="space-y-3">
         {expedientes.map((exp) => (
-          <div key={exp.id} className="bg-white border border-gray-200 rounded-lg p-4 hover:border-blue-300 hover:shadow-sm transition-all flex items-center gap-4">
-            <FileText className="h-8 w-8 text-gray-300 shrink-0" />
-            <div className="flex-1 min-w-0">
-              <div className="flex items-center gap-2">
-                <span className="font-mono text-xs text-gray-500">
-                  {exp.folio || exp.id.slice(0, 8).toUpperCase()}
-                </span>
-                <Badge variant={ESTADO_VARIANT[exp.estado]}>
-                  {ESTADO_LABEL[exp.estado]}
-                </Badge>
+          <Link key={exp.id} to={`/expedientes/${exp.id}`} className="block">
+            <div className="bg-white border border-gray-200 rounded-lg p-4 hover:border-blue-300 hover:shadow-sm transition-all flex items-center gap-4">
+              <FileText className="h-8 w-8 text-gray-300 shrink-0" />
+              <div className="flex-1 min-w-0">
+                <div className="flex items-center gap-2">
+                  <span className="font-mono text-xs text-gray-500">
+                    {exp.folio || exp.id.slice(0, 8).toUpperCase()}
+                  </span>
+                  <Badge variant={ESTADO_VARIANT[exp.estado]}>
+                    {ESTADO_LABEL[exp.estado]}
+                  </Badge>
+                </div>
+                <p className="font-medium text-sm text-gray-900 mt-0.5 truncate">
+                  {[exp.calle, exp.colonia, exp.municipio].filter(Boolean).join(', ') || 'Sin dirección'}
+                </p>
+                <p className="text-xs text-gray-400">
+                  {exp.tipo_inmueble} · {new Date(exp.created_at).toLocaleDateString('es-MX')}
+                </p>
               </div>
-              <p className="font-medium text-sm text-gray-900 mt-0.5 truncate">
-                {[exp.calle, exp.colonia, exp.municipio].filter(Boolean).join(', ') || 'Sin dirección'}
-              </p>
-              <p className="text-xs text-gray-400">
-                {exp.tipo_inmueble} · {new Date(exp.created_at).toLocaleDateString('es-MX')}
-              </p>
+              <ChevronRight className="h-4 w-4 text-gray-300 shrink-0" />
             </div>
-          </div>
+          </Link>
         ))}
       </div>
     </div>
