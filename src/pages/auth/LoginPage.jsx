@@ -1,9 +1,25 @@
-import { Auth } from '@supabase/auth-ui-react'
-import { ThemeSupa } from '@supabase/auth-ui-shared'
+import { useState } from 'react'
 import { supabase } from '@/lib/supabase'
-import { Building2 } from 'lucide-react'
+import { Building2, Loader2 } from 'lucide-react'
+import { Button } from '@/components/ui/button'
+import { Input } from '@/components/ui/input'
+import { Label } from '@/components/ui/label'
 
 export function LoginPage() {
+  const [email, setEmail] = useState('')
+  const [password, setPassword] = useState('')
+  const [loading, setLoading] = useState(false)
+  const [error, setError] = useState(null)
+
+  const handleSubmit = async (e) => {
+    e.preventDefault()
+    setError(null)
+    setLoading(true)
+    const { error } = await supabase.auth.signInWithPassword({ email, password })
+    if (error) setError(error.message)
+    setLoading(false)
+  }
+
   return (
     <div className="min-h-screen bg-gray-50 flex items-center justify-center p-4">
       <div className="w-full max-w-sm">
@@ -14,13 +30,46 @@ export function LoginPage() {
           <h1 className="text-2xl font-bold text-gray-900">Avalúos MX</h1>
           <p className="text-sm text-gray-500 mt-1">Sistema profesional de valuación inmobiliaria</p>
         </div>
+
         <div className="bg-white rounded-xl border border-gray-200 shadow-sm p-6">
-          <Auth
-            supabaseClient={supabase}
-            appearance={{ theme: ThemeSupa, variables: { default: { colors: { brand: '#2563eb', brandAccent: '#1d4ed8' } } } }}
-            localization={{ variables: { sign_in: { email_label: 'Correo electrónico', password_label: 'Contraseña', button_label: 'Iniciar sesión' }, sign_up: { email_label: 'Correo electrónico', password_label: 'Contraseña', button_label: 'Crear cuenta' }, forgotten_password: { link_text: '¿Olvidaste tu contraseña?', button_label: 'Enviar instrucciones' } } }}
-            providers={[]}
-          />
+          <form onSubmit={handleSubmit} className="space-y-4">
+            <div className="space-y-1">
+              <Label htmlFor="email">Correo electrónico</Label>
+              <Input
+                id="email"
+                type="email"
+                value={email}
+                onChange={(e) => setEmail(e.target.value)}
+                placeholder="perito@ejemplo.com"
+                required
+                autoComplete="email"
+              />
+            </div>
+            <div className="space-y-1">
+              <Label htmlFor="password">Contraseña</Label>
+              <Input
+                id="password"
+                type="password"
+                value={password}
+                onChange={(e) => setPassword(e.target.value)}
+                required
+                autoComplete="current-password"
+              />
+            </div>
+
+            {error && (
+              <p className="text-sm text-red-600 bg-red-50 border border-red-200 rounded-md px-3 py-2">
+                {error === 'Invalid login credentials'
+                  ? 'Correo o contraseña incorrectos'
+                  : error}
+              </p>
+            )}
+
+            <Button type="submit" className="w-full" disabled={loading}>
+              {loading ? <Loader2 className="h-4 w-4 animate-spin" /> : null}
+              Iniciar sesión
+            </Button>
+          </form>
         </div>
       </div>
     </div>
